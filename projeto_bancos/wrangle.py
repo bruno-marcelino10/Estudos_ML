@@ -2,12 +2,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import yfinance as yf
+from functools import reduce
 
 class Serie:
 
     def get_yahoo(self, ativo, startdate):
         data = yf.download(ativo, start = startdate)
         target = data["Adj Close"].pct_change().dropna()
+        target.columns = ["FIND11"]
         return target
 
     def get_BCB(self, codigo_serie):
@@ -36,3 +38,8 @@ class Serie:
         pib["PIB"] = pibs
         pib.set_index("Data", inplace = True)
         return pib
+    
+    def merge(self, dfs):
+        df = reduce(lambda left, right: left.join(right, how = "inner"), dfs)
+        return df
+        

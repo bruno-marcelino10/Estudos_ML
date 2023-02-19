@@ -17,7 +17,7 @@ class Serie:
         df = pd.read_json(url)
         df["data"] = pd.to_datetime(df["data"], dayfirst = True)
         df.set_index("data", inplace = True)
-        df["valor"] = df["valor"].astype(float)
+        df["valor"] = (df["valor"]/100).astype(float)
         return df
 
     def get_pib(self, url):
